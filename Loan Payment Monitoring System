@@ -1,0 +1,26 @@
+from datetime import date
+
+# Example client loans
+clients = [
+    {"name": "Jan Kowalski", "loan_id": 101, "due_date": date(2025, 8, 28), "amount": 1500},
+    {"name": "Anna Nowak", "loan_id": 102, "due_date": date(2025, 9, 10), "amount": 2000},
+    {"name": "Piotr Zielinski", "loan_id": 103, "due_date": date(2025, 8, 20), "amount": 1200},
+]
+
+def get_overdue_loans(clients):
+    today = date.today()
+    overdue = []
+    for client in clients:
+        if client["due_date"] < today:
+            overdue.append({
+                "loan_id": client["loan_id"],
+                "name": client["name"],
+                "amount": client["amount"],
+                "days_overdue": (today - client["due_date"]).days
+            })
+    return overdue
+
+if __name__ == "__main__":
+    overdue_loans = get_overdue_loans(clients)
+    for loan in overdue_loans:
+        print(f"Loan {loan['loan_id']} for {loan['name']} is overdue by {loan['days_overdue']} days.")
