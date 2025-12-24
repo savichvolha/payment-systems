@@ -1,0 +1,31 @@
+"""
+Module for calculating late payment interest.
+"""
+
+from datetime import date
+
+
+def calculate_late_interest(
+    amount: float,
+    due_date: date,
+    payment_date: date,
+    daily_rate: float = 0.01
+) -> float:
+    """
+    Calculate interest for late payment.
+
+    Args:
+        amount: loan amount
+        due_date: scheduled payment date
+        payment_date: actual payment date
+        daily_rate: daily interest rate (default 1%)
+
+    Returns:
+        Interest amount rounded to 2 decimals
+    """
+    if payment_date <= due_date:
+        return 0.0
+
+    days_late = (payment_date - due_date).days
+    interest = amount * daily_rate * days_late
+    return round(interest, 2)
