@@ -1,0 +1,28 @@
+"""
+Module for limiting the number of credit applications per client.
+"""
+
+from datetime import date
+from collections import defaultdict
+
+
+class ApplicationLimiter:
+    def __init__(self, max_requests_per_day: int = 3):
+        self.max_requests_per_day = max_requests_per_day
+        self.requests = defaultdict(list)
+
+    def register_request(self, client_id: str, request_date: date) -> bool:
+        """
+        Registers a new credit application.
+
+        Returns True if request is allowed, False if limit exceeded.
+        """
+        daily_requests = [
+            d for d in self.requests[client_id] if d == request_date
+        ]
+
+        if len(daily_requests) >= self.max_requests_per_day:
+            return False
+
+        self.requests[client_id].append(request_date)
+        return True
